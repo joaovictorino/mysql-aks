@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mysql-pv
+spec:
+  capacity:
+    storage: 20Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: default
+  csi:
+    driver: disk.csi.azure.com
+    readOnly: false
+    volumeHandle: /subscriptions/<subscription_id>/resourceGroups/MC_rg-mysql-test_aks-mysql-test_eastus/providers/Microsoft.Compute/disks/disk-mysql-database
+    volumeAttributes:
+      fsType: ext4
