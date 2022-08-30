@@ -41,11 +41,13 @@ resource "azurerm_kubernetes_cluster" "aks-mysql-test" {
 
 resource "azurerm_managed_disk" "disk-mysql-database" {
   name                 = "disk-mysql-database"
-  location             = "eastus" 
-  resource_group_name  = "MC_rg-mysql-test_aks-mysql-test_eastus" 
+  location             = azurerm_resource_group.rg-mysql-test.location
+  resource_group_name  = "MC_${azurerm_resource_group.rg-mysql-test.name}_${azurerm_kubernetes_cluster.aks-mysql-test.name}_${azurerm_resource_group.rg-mysql-test.location}"
   storage_account_type = "Standard_LRS"
   create_option        = "Empty"
   disk_size_gb         = "20"
+
+  depends_on = [ azurerm_kubernetes_cluster.aks-mysql-test ]
 }
 
 resource "azurerm_management_lock" "lock-disk-mysql-database" {
